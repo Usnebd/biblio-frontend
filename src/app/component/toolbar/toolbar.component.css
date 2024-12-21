@@ -1,0 +1,8 @@
+mat-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  gap: 14px; /* Spaziatura tra gli elementi */
+}
+button {
+  font-size: medium;
+}

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { ToolbarComponent } from './component/toolbar/toolbar.component';
+import { DashboardComponent } from './component/dashboard/dashboard.component';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, ToolbarComponent, DashboardComponent],
@@ -10,5 +9,5 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'memo-app';
+  title = 'biblio-app';
 }
