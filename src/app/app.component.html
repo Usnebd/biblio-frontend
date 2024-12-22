@@ -1,8 +1,30 @@
 <main class="main">
-  <app-toolbar></app-toolbar>
+  <mat-toolbar>
+    <span style="font-size: x-large; font-weight: bold; user-select: none">
+      BiblioApp
+    </span>
+    <nav>
+      <button
+        mat-button
+        routerLink="/home"
+        color="primary"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        Home
+      </button>
+      <button
+        mat-button
+        routerLink="/addbook"
+        color="primary"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+      >
+        Aggiungi Libro
+      </button>
+    </nav>
+  </mat-toolbar>
   <div class="content">
-    <app-dashboard></app-dashboard>
+    <router-outlet />
   </div>
 </main>
-
-<router-outlet />
