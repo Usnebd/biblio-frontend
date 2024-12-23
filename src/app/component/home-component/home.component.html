@@ -1,4 +1,4 @@
-<mat-grid-list cols="5">
+<mat-grid-list [cols]="cols" rowHeight="300px">
   @for (book of books(); track book.id) {
   <mat-grid-tile>
     <mat-card class="example-card" appearance="outlined">
@@ -10,7 +10,11 @@
         "
       >
         <mat-card-title>{{ book.title }} </mat-card-title>
-        <button mat-icon-button (click)="copyToClipboard(book.title)">
+        <button
+          mat-icon-button
+          matTooltip="Copy to Clipboard"
+          (click)="copyToClipboard(book.title)"
+        >
           <mat-icon fontIcon="content_copy"></mat-icon>
         </button>
       </mat-card-header>

@@ -12,6 +12,7 @@ import {
 import { BookService } from '../../service/book.service';
 import { BookDTO } from '../../model/book-dto';
 import { SnackbarService } from '../../service/snackbar.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-addbook-page',
@@ -20,6 +21,7 @@ import { SnackbarService } from '../../service/snackbar.service';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
+    RouterLink,
     ReactiveFormsModule,
   ],
   providers: [],
@@ -32,25 +34,19 @@ export class AddbookPageComponent {
   bookService = inject(BookService);
 
   bookForm = new FormGroup({
-    title: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(50),
-    ]), // Campo obbligatorio
+    title: new FormControl('', [Validators.required, Validators.maxLength(50)]), // Campo obbligatorio
     author: new FormControl('', [
       Validators.required,
-      Validators.minLength(3),
       Validators.maxLength(50),
     ]),
     description: new FormControl('', [
       Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(100),
+      Validators.maxLength(200),
     ]),
     price: new FormControl('', [
       Validators.required,
       Validators.min(0),
-      Validators.max(100),
+      Validators.max(1000),
     ]),
     publishYear: new FormControl('', [Validators.required, Validators.min(0)]),
   });

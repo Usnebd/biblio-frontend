@@ -35,25 +35,19 @@ export class EditbookPageComponent implements OnInit {
 
   book: Book = history.state.book;
   editBookForm = new FormGroup({
-    title: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(50),
-    ]), // Campo obbligatorio
+    title: new FormControl('', [Validators.required, Validators.maxLength(50)]), // Campo obbligatorio
     author: new FormControl('', [
       Validators.required,
-      Validators.minLength(3),
       Validators.maxLength(50),
     ]),
     description: new FormControl('', [
       Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(100),
+      Validators.maxLength(200),
     ]),
     price: new FormControl('', [
       Validators.required,
       Validators.min(0),
-      Validators.max(100),
+      Validators.max(1000),
     ]),
     publishYear: new FormControl('', [Validators.required, Validators.min(0)]),
   });
