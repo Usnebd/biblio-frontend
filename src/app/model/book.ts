@@ -1,24 +1,24 @@
 export class Book {
-  id: number;
+  id: string;
   title: string;
   author: string;
   description: string;
-  publishDate: string;
+  publishYear: number;
   price: number;
 
   constructor(
-    id: number,
+    id: string,
     title: string,
     author: string,
     description: string,
-    publishDate: string,
+    publishYear: number,
     price: number
   ) {
     this.id = id;
     this.title = title;
     this.author = author;
     this.description = description;
-    this.publishDate = publishDate;
+    this.publishYear = publishYear;
     this.price = price;
   }
 }

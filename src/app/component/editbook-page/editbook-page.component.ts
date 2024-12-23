@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,28 +11,30 @@ import {
   Validators,
 } from '@angular/forms';
 import { BookService } from '../../service/book.service';
-import { BookDTO } from '../../model/book-dto';
 import { SnackbarService } from '../../service/snackbar.service';
+import { Book } from '../../model/book';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-addbook-page',
+  selector: 'app-editbook-page',
   imports: [
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
+    RouterLink,
     ReactiveFormsModule,
   ],
-  providers: [],
-  templateUrl: './addbook-page.component.html',
-  styleUrl: './addbook-page.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './editbook-page.component.html',
+  styleUrl: './editbook-page.component.css',
 })
-export class AddbookPageComponent {
+export class EditbookPageComponent implements OnInit {
   snackbarService = inject(SnackbarService);
   bookService = inject(BookService);
+  router = inject(Router);
 
-  bookForm = new FormGroup({
+  book: Book = history.state.book;
+  editBookForm = new FormGroup({
     title: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
@@ -54,23 +57,31 @@ export class AddbookPageComponent {
     ]),
     publishYear: new FormControl('', [Validators.required, Validators.min(0)]),
   });
-
-  submitApplication() {
-    if (this.bookForm.invalid) {
+  ngOnInit(): void {
+    this.book = history.state.book;
+    this.editBookForm.patchValue({
+      title: this.book?.title,
+      author: this.book?.author,
+      publishYear: String(this.book?.publishYear),
+      price: String(this.book?.price),
+      description: this.book?.description,
+    });
+  }
+  submitEditApplication() {
+    if (this.editBookForm.invalid) {
       return; // Non eseguire il submit se il form non è valido
     }
-    const book = new BookDTO(
-      this.bookForm.value.title ?? '',
-      this.bookForm.value.author ?? '',
-      this.bookForm.value.description ?? '',
-      Number(this.bookForm.value.publishYear),
-      Number(this.bookForm.value.price)
-    );
-    this.bookService.save(book).subscribe(() => {
-      this.bookForm.reset();
+    this.book.author = this.editBookForm.value.author ?? '';
+    this.book.title = this.editBookForm.value.title ?? '';
+    this.book.description = this.editBookForm.value.description ?? '';
+    this.book.publishYear = Number(this.editBookForm.value.publishYear);
+    this.book.price = Number(this.editBookForm.value.price);
+
+    this.bookService.update(this.book).subscribe(() => {
+      this.router.navigate(['/home']);
       this.snackbarService.openSnackBar('Book Added ✅');
-      Object.keys(this.bookForm.controls).forEach((key) => {
-        const control = this.bookForm.get(key);
+      Object.keys(this.editBookForm.controls).forEach((key) => {
+        const control = this.editBookForm.get(key);
         control?.markAsPristine(); // Rende il controllo "pulito"
         control?.markAsUntouched(); // Rende il controllo "non toccato"
         control?.setErrors(null); // Rimuove gli errori
