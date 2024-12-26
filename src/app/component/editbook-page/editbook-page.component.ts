@@ -71,15 +71,23 @@ export class EditbookPageComponent implements OnInit {
     this.book.publishYear = Number(this.editBookForm.value.publishYear);
     this.book.price = Number(this.editBookForm.value.price);
 
-    this.bookService.update(this.book).subscribe(() => {
-      this.router.navigate(['/home']);
-      this.snackbarService.openSnackBar('Book Added ✅');
-      Object.keys(this.editBookForm.controls).forEach((key) => {
-        const control = this.editBookForm.get(key);
-        control?.markAsPristine(); // Rende il controllo "pulito"
-        control?.markAsUntouched(); // Rende il controllo "non toccato"
-        control?.setErrors(null); // Rimuove gli errori
-      });
+    this.bookService.update(this.book).subscribe((response) => {
+      const statusCode = response.status; // Leggi il codice di stato
+      if (statusCode === 204) {
+        // Caso di No Content (204) - Aggiornamento riuscito
+        this.snackbarService.openSnackBar('Book updated successfully ✅');
+      } else if (statusCode === 404) {
+        // Caso di Not Found (404) - Il libro non esiste
+        this.snackbarService.openSnackBar('Book not found ❌');
+      } else if (statusCode === 409) {
+        // Caso di Conflict (409) - Conflitto (ad esempio, titolo duplicato)
+        this.snackbarService.openSnackBar(
+          'Conflict: Book title already exists ❌'
+        );
+      } else {
+        // Altri codici di stato
+        this.snackbarService.openSnackBar('An unexpected error occurred ❌');
+      }
     });
   }
 }

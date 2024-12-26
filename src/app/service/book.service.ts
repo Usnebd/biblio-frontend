@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from '../model/book';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { BookDTO } from '../model/book-dto';
 
 @Injectable({
@@ -23,6 +23,15 @@ export class BookService {
     return this.http.delete<Book>(`${this.bookUrl}/${id}`);
   }
   public update(book: Book) {
-    return this.http.put<Book>(`${this.bookUrl}/${book.id}`, book);
+    return this.http
+      .put<Book>(`${this.bookUrl}/${book.id}`, book, {
+        observe: 'response',
+      })
+      .pipe(
+        catchError((error) => {
+          console.error('Error in update:', error);
+          return of(error); // Restituisce l'errore come risposta
+        })
+      );
   }
 }

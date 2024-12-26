@@ -28,6 +28,7 @@ export class HomeComponent {
   snackbarService = inject(SnackbarService);
   clipboard = inject(Clipboard);
   bookService = inject(BookService);
+
   ngOnInit() {
     this.calculateGridColumns();
     this.bookService.findAll().subscribe((data) => {
@@ -36,18 +37,11 @@ export class HomeComponent {
       }
     });
   }
+
   deleteBook(book: Book) {
     this.bookService.delete(book.id).subscribe(() => {
       this.books.update((data) => data.filter((b) => b.id !== book.id));
       this.snackbarService.openSnackBar('Deleted Book ✅');
-    });
-  }
-  updateBook(book: Book) {
-    this.bookService.update(book).subscribe((updatedBook) => {
-      this.books.update((array) =>
-        array.map((b) => (b.id === updatedBook.id ? updatedBook : b))
-      );
-      this.snackbarService.openSnackBar('Book Updated ✅');
     });
   }
 
